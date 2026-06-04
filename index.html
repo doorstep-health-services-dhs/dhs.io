@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doorstep Health Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* One unified warm-orange accent — kept soft */
+      --accent:       #f78c40;   /* main CTA orange  */
+      --accent-hover: #f57a28;
+      --accent-soft:  #fde8d4;   /* tinted backgrounds */
+      --accent-pale:  #fff3ea;   /* even lighter fill  */
+
+      /* Neutrals */
+      --bg:           #fff8f2;
+      --card-bg:      rgba(255,255,255,0.90);
+      --border:       rgba(247,140,64,0.18);
+      --text-heading: #3d1f0a;   /* very dark brown — readable */
+      --text-body:    #6b3a1f;
+      --text-muted:   #c06830;
+      --white:        #ffffff;
+    }
+
+    html, body { min-height: 100%; font-family: 'Poppins', sans-serif; }
+    body { background: var(--bg); overflow-x: hidden; position: relative; }
+
+    /* ── Background ── */
+    .bg-mesh {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 90% 55% at 0%   0%,   #fde8d4 0%, transparent 58%),
+        radial-gradient(ellipse 60% 50% at 100% 8%,   #fdf0e0 0%, transparent 52%),
+        radial-gradient(ellipse 70% 65% at 50% 100%,  #fde8d4 0%, transparent 60%),
+        linear-gradient(160deg, #fff8f2 0%, #fff3ea 100%);
+    }
+
+    /* ── Floating icons ── */
+    .floaters { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .floater {
+      position: absolute; opacity: 0.055;
+      animation: floatUp linear infinite; user-select: none;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(110vh) rotate(0deg);   opacity: 0; }
+      10%  { opacity: 0.055; }
+      90%  { opacity: 0.055; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ── Page ── */
+    .page {
+      position: relative; z-index: 1; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 2.2rem 1.25rem 1.75rem;
+    }
+
+    /* ── Card ── */
+    .card {
+      width: 100%; max-width: 420px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--border);
+      border-radius: 2rem;
+      padding: 2.25rem 1.75rem 2rem;
+      box-shadow: 0 6px 32px rgba(247,140,64,0.10), 0 1px 4px rgba(247,140,64,0.06);
+      animation: slideUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(36px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Logo ── */
+    .logo-wrap {
+      display: flex; justify-content: center;
+      margin-bottom: 1.2rem;
+      animation: scaleIn 0.65s 0.15s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.82); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .logo-ring {
+      position: relative; width: 112px; height: 112px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-ring::before,
+    .logo-ring::after {
+      content: ''; position: absolute; border-radius: 50%;
+      border: 1.5px solid var(--accent);
+      animation: pulse 2.8s ease-out infinite;
+    }
+    .logo-ring::before { width: 100%; height: 100%; animation-delay: 0s; }
+    .logo-ring::after  { width: 136%; height: 136%; animation-delay: 1.4s; }
+    @keyframes pulse {
+      0%   { transform: scale(0.84); opacity: 0.45; }
+      70%  { transform: scale(1.10); opacity: 0; }
+      100% { transform: scale(1.10); opacity: 0; }
+    }
+
+    .logo-inner {
+      position: relative; z-index: 1;
+      width: 90px; height: 90px;
+      background: var(--accent-pale);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 18px rgba(247,140,64,0.18);
+      overflow: hidden;
+    }
+    .logo-inner img { width: 74px; height: 74px; object-fit: contain; }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      animation: fadeUp 0.55s 0.3s both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .tagline-top {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.4rem;
+    }
+
+    .company-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem; font-weight: 700;
+      color: var(--text-heading);
+      line-height: 1.22; letter-spacing: -0.01em;
+    }
+
+    .divider {
+      width: 40px; height: 3px;
+      background: var(--accent);
+      border-radius: 99px;
+      margin: 0.65rem auto 0.65rem;
+      opacity: 0.7;
+    }
+
+    .tagline-main {
+      font-size: 0.83rem; font-weight: 500;
+      color: var(--text-body); line-height: 1.5;
+      font-style: italic;
+    }
+
+    .subtext {
+      font-size: 0.76rem; font-weight: 400;
+      color: var(--text-muted); line-height: 1.5;
+      margin-top: 0.3rem;
+    }
+
+    /* ── Buttons ── */
+    .buttons {
+      display: flex; flex-direction: column; gap: 0.9rem;
+      margin-top: 1.5rem;
+      animation: fadeUp 0.55s 0.48s both;
+    }
+
+    .wa-btn {
+      display: block; text-decoration: none;
+      background: var(--accent);
+      border-radius: 1.15rem;
+      padding: 1.05rem 1.35rem;
+      color: var(--white);
+      position: relative; overflow: hidden;
+      transition: transform 0.16s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.16s ease,
+                  background 0.16s ease;
+      box-shadow: 0 5px 18px rgba(247,140,64,0.28);
+    }
+    /* top-left highlight */
+    .wa-btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.16) 0%, transparent 50%);
+      border-radius: inherit; pointer-events: none;
+    }
+    /* sheen */
+    .wa-btn::after {
+      content: ''; position: absolute;
+      top: -60%; left: -80%; width: 55%; height: 220%;
+      background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.15) 50%, transparent 62%);
+      transform: skewX(-15deg);
+      transition: left 0.5s ease;
+      pointer-events: none;
+    }
+    .wa-btn:hover::after { left: 130%; }
+
+    @media (hover: hover) {
+      .wa-btn:hover {
+        background: var(--accent-hover);
+        transform: translateY(-3px) scale(1.01);
+        box-shadow: 0 10px 28px rgba(247,140,64,0.32);
+      }
+    }
+    .wa-btn:active { transform: scale(0.97); box-shadow: 0 3px 8px rgba(247,140,64,0.2); }
+
+    .btn-inner { display: flex; align-items: center; gap: 0.7rem; }
+    .btn-icon  { font-size: 1.6rem; flex-shrink: 0; }
+    .btn-text  { flex: 1; }
+    .btn-label { font-size: 1rem; font-weight: 700; display: block; line-height: 1.2; }
+    .btn-desc  { font-size: 0.71rem; font-weight: 400; opacity: 0.88; display: block; margin-top: 0.12rem; line-height: 1.35; }
+    .btn-arrow { font-size: 1.15rem; opacity: 0.7; flex-shrink: 0; transition: transform 0.2s ease; }
+    .wa-btn:hover .btn-arrow { transform: translateX(4px); }
+
+    .wa-badge {
+      display: inline-flex; align-items: center; gap: 0.28rem;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 99px; padding: 0.16rem 0.5rem;
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin-top: 0.45rem;
+    }
+    .wa-dot {
+      width: 6px; height: 6px; background: #6ee7b7;
+      border-radius: 50%; animation: blink 1.7s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; } 50% { opacity: 0.25; }
+    }
+
+    /* ── Feature pills ── */
+    .features {
+      margin-top: 1.4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+      animation: fadeUp 0.55s 0.65s both;
+    }
+    /* last item centred when odd count — span both cols */
+    .features .feat:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: calc(50% - 0.275rem);
+    }
+
+    .feat {
+      display: flex; align-items: center; gap: 0.45rem;
+      background: var(--accent-pale);
+      border: 1px solid rgba(247,140,64,0.18);
+      border-radius: 0.75rem;
+      padding: 0.55rem 0.7rem;
+    }
+    .feat-icon { font-size: 1rem; flex-shrink: 0; }
+    .feat-text {
+      font-size: 0.68rem; font-weight: 600;
+      color: var(--text-body); line-height: 1.3;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 1.6rem; text-align: center;
+      font-size: 0.68rem; color: #b07040; line-height: 1.65;
+      animation: fadeUp 0.55s 0.85s both;
+    }
+    footer a { color: var(--accent-hover); text-decoration: none; font-weight: 500; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+<div class="floaters" id="floaters"></div>
+
+<div class="page">
+  <div class="card">
+
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <div class="logo-ring">
+        <div class="logo-inner">
+          <img
+            src="https://doorstephealth.in/wp-content/uploads/2023/01/image_25-removebg-preview-1.png"
+            alt="Doorstep Health Services Logo"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <p class="tagline-top">Your Trusted Health Partner</p>
+      <h1 class="company-name">Doorstep Health<br>Services</h1>
+      <div class="divider"></div>
+      <p class="tagline-main">"Health Where You Want It, When You Want It"</p>
+      <p class="subtext">Tap below to connect with us instantly on WhatsApp</p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+
+      <a class="wa-btn" href="https://wa.me/9158612211" target="_blank" rel="noopener">
+        <div class="btn-inner">
+          <span class="btn-icon">🏥</span>
+          <div class="btn-text">
+            <span class="btn-label">Homecare &amp; Lab-Test</span>
+            <span class="btn-desc">Book a home visit or lab test by our health professionals</span>
+            <span class="wa-badge"><span class="wa-dot"></span> Chat on WhatsApp</span>
+          </div>
+          <span class="btn-arrow">›</span>
+        </div>
+      </a>
+
+      <a class="wa-btn" href="https://wa.me/+919607922435" target="_blank" rel="noopener">
+        <div class="btn-inner">
+          <span class="btn-icon">💊</span>
+          <div class="btn-text">
+            <span class="btn-label">Pharmacy</span>
+            <span class="btn-desc">Order genuine medicines with prescription assistance</span>
+            <span class="wa-badge"><span class="wa-dot"></span> Chat on WhatsApp</span>
+          </div>
+          <span class="btn-arrow">›</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Feature pills -->
+    <div class="features">
+      <div class="feat"><span class="feat-icon">👨‍⚕️</span><span class="feat-text">Qualified Professionals</span></div>
+      <div class="feat"><span class="feat-icon">🌟</span><span class="feat-text">Expert &amp; Reliable Care</span></div>
+      <div class="feat"><span class="feat-icon">🤝</span><span class="feat-text">Personalised Support</span></div>
+      <div class="feat"><span class="feat-icon">💊</span><span class="feat-text">Genuine Medicines</span></div>
+      <div class="feat"><span class="feat-icon">📋</span><span class="feat-text">Prescription Assistance</span></div>
+    </div>
+
+  </div><!-- /card -->
+
+  <footer>
+    © 2025 Doorstep Health Services<br>
+    <a href="https://doorstephealth.in" target="_blank" rel="noopener">doorstephealth.in</a>
+  </footer>
+</div>
+
+<script>
+  const icons = ['💉','🩺','🩹','❤️','🧬','🩻','🧪','💊','🏥','🩸','🌡️','🫀'];
+  const container = document.getElementById('floaters');
+  for (let i = 0; i < 16; i++) {
+    const el = document.createElement('span');
+    el.className = 'floater';
+    el.textContent = icons[Math.floor(Math.random() * icons.length)];
+    el.style.left = (Math.random() * 100) + 'vw';
+    el.style.animationDuration = (15 + Math.random() * 18) + 's';
+    el.style.animationDelay   = (Math.random() * 24) + 's';
+    el.style.fontSize = (1.3 + Math.random() * 1.5) + 'rem';
+    container.appendChild(el);
+  }
+</script>
+</body>
+</html>
